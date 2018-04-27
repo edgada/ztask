@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Dimensions, StyleSheet, Text,  View, Image, TouchableOpacity, TextInput, Linking, AsyncStorage, Alert } from 'react-native';
+import { Dimensions, StyleSheet, Text,  View, Image, TouchableOpacity, TextInput, Linking, AsyncStorage, NetInfo } from 'react-native';
 
 const { width } = Dimensions.get('window');
 
@@ -34,7 +34,11 @@ export default class App extends Component{
             });
         });
 
-        this.getOras();
+        NetInfo.getConnectionInfo().then((connectionInfo) => {
+            conn = connectionInfo.type.toString()
+            if(conn != "none") this.getOras();
+        });
+
     }
 
     getOras(){
@@ -91,7 +95,7 @@ export default class App extends Component{
                         <TextInput autoCapitalize={'none'}
                                    multiline={true}
                                    maxLength={160}
-                                   numberOfLines={3}
+                                   numberOfLines={4}
                                    placeholder={this.state.text}
                                    style={infoScreenStyles.txtInput}
                                    onChangeText={(text) => this.setState({text})} value={this.state.text}
@@ -209,7 +213,7 @@ const infoScreenStyles = StyleSheet.create({
         },
             aboutMeInfoContainer: {
                 width: '100%',
-                height: '12%',
+                height: '14%',
                 justifyContent: 'center',
                 alignItems: 'center',
                 paddingLeft: '5%',
@@ -252,5 +256,5 @@ const infoScreenStyles = StyleSheet.create({
             btnText: {
                 color: '#ffffff',
                 fontSize: getAdjustedFontSize(20),
-            },
+            }
     });
